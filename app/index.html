@@ -48,7 +48,7 @@
                 $.each(json, function(index, value) {
                     //console.log(entry);
                     //console.log(index);
-                    console.log(value);
+                    //console.log(value);
                     console.log(value.Topic);
 
                     if (value.Topic == 'Detailed mother tongue') {
@@ -57,18 +57,19 @@
                         console.log(value.Total);
                     }
                 })
-            });
 
-             d3.select("body").selectAll("div")
+                d3.select("body").selectAll("div")
                             .data(chars)
                             .enter()
                             .append("div")
                             .attr("class", "bar")
                             .style("height", function(d) {
-                var barHeight = d * 5;  //Scale up by factor of 5
+                var barHeight = d / 100000;  //Scale up by factor of 5
                 return barHeight + "px";
-
+                })
             });
+
+            console.log(chars);
         
 
         </script>
