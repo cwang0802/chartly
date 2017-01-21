@@ -16,6 +16,7 @@
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript">
+        var sizeFactor = 50000;
         var windowHeight = $(window).height();
         var windowWidth = $(window).width();
         var svgMargin = 10;
@@ -33,43 +34,49 @@
 
 
         var colors = ["#FF5900", "#FF9A00", "#0D56A6", "#00A876"]
-        var chars = [];
+        var info = [];
 
         $.getJSON('assets/data/census.json', function(json) {
             $.each(json, function(index, value) {
-                if (value.Topic == 'Detailed mother tongue') {
-                    chars.push(value.Total);
-                    console.log(value.Total);
+                if (value.Geo_Code == '1' && 
+                    value.Topic == 'Detailed mother tongue' 
+                    && value.Total > 0 &&
+                    value.Characteristic != 'Detailed mother tongue - Total population excluding institutional residents'
+                    ) {
+                    info.push(value);
                 }
             })
-            console.log(chars);
+
             svgContainer.selectAll("circle")
-                .data(chars)
+                .data(info)
                 .enter()
                 .append("circle")
                 .attr("r", function(d) {
-                    return d / 100000
+                    return d.Total / sizeFactor;
                 })
-                .attr("cx", function(d) {
+                .attr("cx", function() {
                     return Math.random() * (windowWidth - 2 * svgMargin) + svgMargin / 2
                 })
-                .attr("cy", function(d) {
+                .attr("cy", function() {
                     return Math.random() * (windowHeight - 2 * svgMargin) + svgMargin / 2
                 })
                 .style("fill", function() {
                     return colors[Math.round(Math.random() * 3)]
                 })
                 .style("opacity", 0.5)
-                /*.transition().each("end", function() {
-                    myTransf();
-                });
-                */
-
                 .on("mouseover" , function() { 
-                    d3.select(this).transition().attr('r', function(d) { return 1.2 * d / 100000; });
+                    d3.select(this).transition().attr('r', function(d) {  
+                        svgContainer.append("text")
+                            .attr("x", this.cx.animVal.value)
+                            .attr("y", this.cy.animVal.value)
+                            .text(d.Characteristic.trim() + ": " + d.Total)
+                            .style("text-anchor", "middle")
+                        return 1.2 * d.Total / sizeFactor;
+                    });
                 })
                 .on("mouseout", function() { 
-                    d3.select(this).transition().attr('r', function(d) { return d / 100000; });
+                    d3.select(this).transition().attr('r', function(d) { return d.Total / sizeFactor; });
+                    d3.selectAll("text").remove();
                 });
         })
 
@@ -81,7 +88,6 @@
                     myTransf();
                 })
         };
-
     </script>
 
     {{content-for "body"}}
