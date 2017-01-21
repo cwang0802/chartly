@@ -1,0 +1,53 @@
+2011 Census Profile - Data quality flags and descriptions - Canada provinces and territories
+"Geo_Code","Geo_Name","DQ_Flag (5-digit code)*"
+"01","Canada","20000"
+"10","Newfoundland and Labrador","00000"
+"11","Prince Edward Island","00000"
+"12","Nova Scotia","00000"
+"13","New Brunswick","00000"
+"24","Quebec","20000"
+"35","Ontario","20000"
+"46","Manitoba","20000"
+"47","Saskatchewan","20000"
+"48","Alberta","20000"
+"59","British Columbia","20000"
+"60","Yukon","01000"
+"61","Northwest Territories","01000"
+"62","Nunavut","02000"
+
+
+* Data quality flags for place of residence
+DIGIT DESCRIPTION
+1st (0XXXX) Incomplete enumeration flag
+2nd (X0XXX) Data quality flag
+3rd (XX0XX) Population and dwelling counts error flag
+4th (XXX0X) Not applicable
+5th (XXXX0) 2006 adjusted population flag
+
+FLAG DESCRIPTION
+Incomplete enumeration flag
+0 = Default.
+1 = Incompletely enumerated Indian reserve or Indian settlement (suppressed).
+2 = Excludes census data for one or more incompletely enumerated Indian reserves or Indian settlements.
+
+Data quality flag
+0 = Default.
+1 = Data quality index showing  for the short census questionnaire (100% data)  a global non response rate higher than or equal to 5% but lower than 10%.
+2 = Data quality index showing  for the short census questionnaire (100% data)  a global non response rate higher than or equal to 10% but lower than 25%.
+3 = Data quality index showing  for the short census questionnaire (100% data)  a global non response rate higher than or equal to 25% (suppressed).
+
+Population and dwelling counts error flag
+0 = Default.
+1 = An error exists in the 2011 population and dwelling counts for this area. For further details  please refer to the population and dwelling counts data section of the 'Notes' file.
+2 = In 2006  the population and/or dwelling counts for this census subdivision were found to be incorrect. Since it is not possible to make changes to the 2006 Census data presented in these tables  the 2006 data should be used with caution. For further details  please refer to the population and dwelling counts data section of the 'Notes' file.
+3 = Both the 2011 and 2006 population and/or dwelling counts for this area were found to be incorrect. Since it is not possible to make changes to the census data presented in these tables  these counts should be used with caution. For further details  please refer to the population and dwelling counts data section of the 'Notes' file.
+
+Not Applicable
+0 = Default.
+
+2006 adjusted population flag
+0 = Default.
+1 = 2006 adjusted count; most of these are the result of boundary changes.
+
+Notes
+(1) The data quality flag does not apply to the population and dwelling counts.
