@@ -1,7 +1,17 @@
- div.bar {
+div.bar {
     display: inline-block;
     width: 20px;
     height: 75px;   /* We'll override this later */
     background-color: teal;
         margin-right: 2px;
 }
+/*
+circle {
+	-webkit-transform: scale(1);
+	transform: scale(1);
+}
+
+circle.hover {
+    -webkit-transform: scale(1.1);
+  	transform: scale(1.1);
+}*/

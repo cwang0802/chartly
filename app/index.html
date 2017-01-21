@@ -1,83 +1,95 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Chartly</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    {{content-for "head"}}
+    <meta name="viewport" content="width=device-width, initial-scale=1"> {{content-for "head"}}
 
     <link rel="stylesheet" href="{{rootURL}}assets/vendor.css">
-    <link rel="stylesheet" href="{{rootURL}}assets/chartly.css">
+    <link rel="stylesheet" href="{{rootURL}}assets/chartly.css"> {{content-for "head-footer"}}
+</head>
 
-    {{content-for "head-footer"}}
-  </head>
-  <body>
-      <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-      <script type="text/javascript">
-            // Your beautiful D3 code will go here
-            d3.select("body").append("p").text("New paragraph!");
+<body>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        var windowHeight = $(window).height();
+        var windowWidth = $(window).width();
+        var svgMargin = 10;
+        var svgContainer = d3.select("body").append("svg")
+            .attr("width", windowWidth - svgMargin)
+            .attr("height", windowHeight - svgMargin)
+            .attr("transform", "translate(" + svgMargin / 2 + "," + svgMargin / 2 + ")");
 
-
-           var dataset = [];                        //Initialize empty array
-            for (var i = 0; i < 25; i++) {           //Loop 25 times
-                var newNumber = Math.random() * 30;  //New random number (0-30)
-                dataset.push(newNumber);             //Add new number to array
-            }
-/*
-                        d3.select("body").selectAll("div")
-                            .data(dataset)
-                            .enter()
-                            .append("div")
-                            .attr("class", "bar")
-                            .style("height", function(d) {
-                var barHeight = d * 5;  //Scale up by factor of 5
-                return barHeight + "px";
-
-            });*/
+        $(window).resize(function() {
+            windowHeight = $(window).height();
+            windowWidth = $(window).width();
+            svgContainer.attr("width", windowWidth - svgMargin).attr("height", windowHeight - svgMargin);
+        })
 
 
 
+        var colors = ["#FF5900", "#FF9A00", "#0D56A6", "#00A876"]
+        var chars = [];
 
-            var chars = [];
-
-            $.getJSON('assets/data/census.json', function(json) {
-                $.each(json, function(index, value) {
-                    //console.log(entry);
-                    //console.log(index);
-                    //console.log(value);
-                    console.log(value.Topic);
-
-                    if (value.Topic == 'Detailed mother tongue') {
-                        //chars[value.Characteristic] = value.Total;
-                        chars.push(value.Total);
-                        console.log(value.Total);
-                    }
-                })
-
-                d3.select("body").selectAll("div")
-                            .data(chars)
-                            .enter()
-                            .append("div")
-                            .attr("class", "bar")
-                            .style("height", function(d) {
-                var barHeight = d / 100000;  //Scale up by factor of 5
-                return barHeight + "px";
-                })
-            });
-
+        $.getJSON('assets/data/census.json', function(json) {
+            $.each(json, function(index, value) {
+                if (value.Topic == 'Detailed mother tongue') {
+                    chars.push(value.Total);
+                    console.log(value.Total);
+                }
+            })
             console.log(chars);
-        
+            svgContainer.selectAll("circle")
+                .data(chars)
+                .enter()
+                .append("circle")
+                .attr("r", function(d) {
+                    return d / 100000
+                })
+                .attr("cx", function(d) {
+                    return Math.random() * (windowWidth - 2 * svgMargin) + svgMargin / 2
+                })
+                .attr("cy", function(d) {
+                    return Math.random() * (windowHeight - 2 * svgMargin) + svgMargin / 2
+                })
+                .style("fill", function() {
+                    return colors[Math.round(Math.random() * 3)]
+                })
+                .style("opacity", 0.5)
+                /*.transition().each("end", function() {
+                    myTransf();
+                });
+                */
 
-        </script>
+                .on("mouseover" , function() { 
+                    d3.select(this).transition().attr('r', function(d) { return 1.2 * d / 100000; });
+                })
+                .on("mouseout", function() { 
+                    d3.select(this).transition().attr('r', function(d) { return d / 100000; });
+                });
+        })
+
+        function myTransf() {
+            d3.select("circle").transition().duration(500)
+                .attr("cx", Math.random() * (windowWidth - 2 * svgMargin) + svgMargin / 2)
+                .attr("cy", Math.random() * (windowHeight - 2 * svgMargin) + svgMargin / 2)
+                .each("end", function() {
+                    myTransf();
+                })
+        };
+
+    </script>
+
     {{content-for "body"}}
 
     <script src="{{rootURL}}assets/vendor.js"></script>
     <script src="{{rootURL}}assets/chartly.js"></script>
 
     {{content-for "body-footer"}}
-  </body>
+</body>
+
 </html>
