@@ -10,3 +10,13 @@ div.bar {
 * {
 	font-family: 'Open Sans',serif;
 }
+
+.provinceMenu {
+	background-color: skyblue;
+	width: 100%;
+	max-height: 100px;
+	opacity: 50%;
+	top: 0;
+	left: 0;
+
+}
